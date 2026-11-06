@@ -1,0 +1,27 @@
+services:
+  db:
+    image: mariadb:lts
+    volumes:
+      - db_data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=wordpress
+      - MYSQL_USER=manager
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+
+  web:
+    image: wordpress:latest
+    depends_on:
+      - db
+    volumes:
+      - ./wp_data:/var/www/html
+    environment:
+      - WORDPRESS_DB_USER=manager
+      - WORDPRESS_DB_PASSWORD=${MYSQL_PASSWORD}
+      - WORDPRESS_DB_HOST=db
+      - WORDPRESS_DB_NAME=wordpress
+    ports:
+      - "8080:80"
+
+volumes:
+  db_data:
