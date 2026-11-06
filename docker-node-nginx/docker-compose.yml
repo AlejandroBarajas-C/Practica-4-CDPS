@@ -1,0 +1,15 @@
+services:
+  app-node:
+    build: .
+    container_name: mi_backend_node
+    restart: always
+
+  web-nginx:
+    image: nginx:alpine
+    container_name: mi_proxy_nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - app-node
